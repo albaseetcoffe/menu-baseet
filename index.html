@@ -1,1 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>منيو دكتور الكيف</title>
+  <style>
+    body { margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif; background:#fdfdfd; color:#333; }
+    .container { padding:16px; }
+    h1 { text-align:center; font-size:1.4rem; margin-bottom:20px; }
+    .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; }
+    .card { background:white; border-radius:8px; padding:12px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.1); cursor:pointer; }
+    .card h3 { margin:0; font-size:0.95rem; }
+    .modal { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; z-index:10; }
+    .modal-content { background:white; border-radius:8px; width:95%; max-width:450px; max-height:90vh; overflow-y:auto; padding:16px; direction:rtl; }
+    .close-btn { text-align:left; margin-bottom:8px; }
+    .close-btn button { background:none; border:none; font-size:1.2rem; cursor:pointer; color:#888; }
+    .item { padding:8px 0; border-bottom:1px solid #eee; }
+    .item:last-child { border:none; }
+    .item h4 { margin:0 0 4px; font-size:1rem; color:#222; }
+    .item p { margin:2px 0; font-size:0.9rem; color:#444; }
+    .item img { width:100%; border-radius:6px; margin:8px 0; max-height:160px; object-fit:cover; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>منيو البسيط الأصلي دكتور الكيف</h1>
+    <div class="cards">
+      <div class="card" data-section="avocado"><h3>🥑 عالم الأفوكادو</h3></div>
+      <div class="card" data-section="special"><h3>🧃 عصير سبيشال</h3></div>
+      <div class="card" data-section="icedcoffee"><h3>☕ ميلك شيك قهوة باردة</h3></div>
+      <div class="card" data-section="exclusive"><h3>🍓 العصائر المميزة</h3></div>
+      <div class="card" data-section="mixjuice"><h3>🍹 طبيعي مشكل</h3></div>
+      <div class="card" data-section="mango"><h3>🥭 عالم المانجا</h3></div>
+      <div class="card" data-section="strawberry"><h3>🍓 عالم الفراولة</h3></div>
+      <div class="card" data-section="citrus"><h3>🍊 عالم الحمضيات</h3></div>
+      <div class="card" data-section="cream"><h3>🍮 قشطة بلدية</h3></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="close-btn"><button onclick="closeModal()">✖️</button></div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      avocado: {
+        title: 'عالم الأفوكادو والقشطة البلدية',
+        items: [
+          { name:' أفوكادو مع قشطة بلدية وكاجو وعسل', price:{medium:'1.50'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:' أفوكادو دبل قشطة بلدية وكاجو وعسل', price:{medium:'2.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'أفوكادو بالموز + قشطة بلدية وكاجو وعسل', price:{ medium:'2.00', large:'2.50'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'أفوكادو بالفراولة + قشطة بلدية وكاجو وعسل', price:{ medium:'2.00', large:'2.50'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'أفوكادو بالمانجا + قشطة بلدية وكاجو وعسل', price:{ medium:'2.00', large:'2.50'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'أفوكادو بالكيوي + قشطة بلدية وكاجو وعسل', price:{small:'2.00', medium:'—', large:'2.50'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'أفوكادو بالبوظة العربية + قشطة وكاجو وعسل', price:{small:'2.00', medium:'—', large:'2.50'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'أفوكادو بالتمر + قشطة بلدية وكاجو وعسل', price:{small:'2.00', medium:'—', large:'2.50'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'أفوكادو بيج سايز دبل قشطة وكاجو وعسل', price:{ large:'2.50'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'أفوكادو تيربو مع قطع فواكه', price:{small:'2.75', medium:'—', large:'—'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'كاسة قشطة بلدية + كاجو وعسل', price:{small:'1.50', medium:'—', large:'2.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'صحن فواكه مع قشطة', price:{small:'2.50', medium:'—', large:'3.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' },
+          { name:'صحن فواكه مع بوظة عربية', price:{small:'2.50', medium:'—', large:'—'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Avocado' }
+        ]
+      },
+      special: {
+        title: 'عصائر سبيشال البسيط',
+        items: [
+          { name:'بركان جريب فروت + ليمون + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'الفصول: أناناس + تفاح + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'فيتامين سي: ليمون + برتقال + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'روقان: كيوي + برتقال + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'تمرية: تمر + موز + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'مارغريتا أناناس + خوخ + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'البسيط آيس فانيلا + كرميل + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'هاواي آيس: فانيلا + توت أزرق + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'كريزي آيس: فانيلا + ليمون + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'الكيف: أناناس + جوز الهند + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'الماجيك: أناناس + مانجا + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'الشبح: فراولة + ليمون + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' },
+          { name:'جوجل آيس: فانيلا + موز + إضافة سرية', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—', image:'https://via.placeholder.com/300x200.png?text=Special+Juice' }
+        ]
+      },
+      icedcoffee: {
+        title: 'ميلك شيك قهوة باردة',
+        items: [
+          { name:'أوريو', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'لوتس', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'نوتيلا', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'سنكرز', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'مارس', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'جالكسي', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'بستاشيو', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'كراميل / سبانيش آيس لاتيه', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'آيس كوفي (ثلج سلش أو مكعبات)', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'آيس موكا (ثلج سلش أو مكعبات)', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'آيس نسكافيه ٣ في 1', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'آيس كابتشينو', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'فربتشينو فراولة', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'أيتشتاين', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'نيوتن', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' }
+        ]
+      },
+      exclusive: {
+        title: 'العصائر المميزة البسيط',
+        items: [] // تم دمجه ضمن special قي تصنيفك
+      },
+      mixjuice: {
+        title: 'طبيعي مشكل',
+        items: [
+          { name:'موز بالحليب', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'أناناس وجوز الهند', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'شمام', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'شمام بالحليب', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'بطيخ', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'بطيخ ونعنع', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'بطيخ بالحليب', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' }
+        ]
+      },
+      mango: {
+        title: 'عالم المانجا',
+        items: [
+          { name:'مانجا', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'مانجا بالفراولة', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'مانجا وباشن فروت', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'مانجا وشمام', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'مانجا وليمون', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'مانجا وأناناس', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'مانجا وكيوي', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'مانجا بالحليب', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'مانجا وموز', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' }
+        ]
+      },
+      strawberry: {
+        title: 'عالم الفراولة',
+        items: [
+          { name:'فراولة وموز وبرتقال', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'كوكتيل فراولة وموز ومانجا', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'كوكتيل فراولة وموز بالحليب', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'كوكتيل فراولة وباشن فروت', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'فراولة وكيوي', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'فراولة وأناناس', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'فراولة وكرز', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'فراولة وشمام', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'فراولة وبطيخ', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'فراولة بالحليب', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+        ]
+      },
+      citrus: {
+        title: 'عالم الحمضيات',
+        items: [
+          { name:'ليمون ونعنع', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'ليمون وكيوي', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'ليمون وبرتقال', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'ليمون وشمام', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'ليمون وبطيخ', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'ليمون وأناناس', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'برتقال وفراولة', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'برتقال وشمام', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'برتقال وأناناس', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'برتقال وكيوي', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' },
+          { name:'برتقال', price:{small:'0.50', medium:'0.75', large:'1.00'}, description:'—' }
+        ]
+      },
+      cream: {
+        title: 'قشطة بلدية',
+        items: [
+          { name:'—', price:{small:'—', medium:'—', large:'—'}, description:'—' }
+        ]
+      }
+    };
+
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => { openModal(card.dataset.section); });
+    });
+
+    function openModal(sectionKey){
+      const sec = data[sectionKey];
+      let body = `<h2 style="margin-bottom:12px;">${sec.title}</h2>`;
+      sec.items.forEach(it=>{
+        body += `<div class="item">
+          <h4>${it.name}</h4>
+          ${it.image?`<img src="${it.image}" alt="${it.name}">`:``}
+          <p>السعر: صغير ${it.price.small} / وسط ${it.price.medium} / كبير ${it.price.large}</p>
+          <p>المكونات: ${it.description}</p>
+        </div>`;
+      });
+      document.getElementById('modal-body').innerHTML = body;
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal(){ document.getElementById('modal').style.display = 'none'; }
+  </script>
+</body>
+</html>
 
